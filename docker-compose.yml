@@ -2,12 +2,14 @@ version: '3'
 
 services:
     clickhouse-zookeeper:
-        image: zookeeper
+        image: zookeeper:3.8.2
         ports:
-            - "2181:2181"
-            - "2182:2182"
+            - 22181:2181
+            - 22182:2182
+            - 20000:22
         container_name: clickhouse-zookeeper
         hostname: clickhouse-zookeeper
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-01:
         image: yandex/clickhouse-server
@@ -15,6 +17,8 @@ services:
         container_name: clickhouse-01
         ports:
             - 9001:9000
+            - 20001:22
+            - 8121:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -27,6 +31,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-02:
         image: yandex/clickhouse-server
@@ -34,6 +39,8 @@ services:
         container_name: clickhouse-02
         ports:
             - 9002:9000
+            - 20002:22
+            - 8122:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -46,6 +53,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-03:
         image: yandex/clickhouse-server
@@ -53,6 +61,8 @@ services:
         container_name: clickhouse-03
         ports:
             - 9003:9000
+            - 20003:22
+            - 8123:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -65,6 +75,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-04:
         image: yandex/clickhouse-server
@@ -72,6 +83,8 @@ services:
         container_name: clickhouse-04
         ports:
             - 9004:9000
+            - 20004:22
+            - 8124:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -84,6 +97,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-05:
         image: yandex/clickhouse-server
@@ -91,6 +105,8 @@ services:
         container_name: clickhouse-05
         ports:
             - 9005:9000
+            - 20005:22
+            - 8125:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -103,6 +119,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 
     clickhouse-06:
         image: yandex/clickhouse-server
@@ -110,6 +127,8 @@ services:
         container_name: clickhouse-06
         ports:
             - 9006:9000
+            - 20006:22
+            - 8126:8123
         volumes:
                 - ./config/clickhouse_config.xml:/etc/clickhouse-server/config.xml
                 - ./config/clickhouse_metrika.xml:/etc/clickhouse-server/metrika.xml
@@ -122,6 +141,7 @@ services:
                 hard: 262144
         depends_on:
             - "clickhouse-zookeeper"
+        # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
 networks:
     default:
         external:
