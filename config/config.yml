@@ -1,0 +1,24 @@
+server:
+  http:
+      listen_addr: ":9090"
+hack_me_please: true
+log_debug: true
+users:
+  - name: "ycq"
+    password: "123456"
+    to_cluster: "default_cluster"
+    to_user: "ycq"
+
+clusters:
+  - name: "default_cluster"
+    nodes: [
+      "clickhouse-01:8123",
+      "clickhouse-02:8123",
+      "clickhouse-03:8123",
+      "clickhouse-04:8123",
+      "clickhouse-05:8123",
+      "clickhouse-06:8123"
+    ]
+    users:
+    - name: "ycq"
+      password: "123456"
