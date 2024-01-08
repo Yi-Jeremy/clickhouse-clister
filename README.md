@@ -11,13 +11,17 @@ docker run -d --name clickhouse-server -p 9000:9000 --ulimit nofile=262144:26214
 
 ```
 
-- Run client
+- Enter into container and run bash
 
 ```
-docker run -it --rm --link clickhouse-server:clickhouse-server yandex/clickhouse-client  --host clickhouse-server
+docker exec -it  clickhouse-server /bin/bash
 ```
 
-Now you can see if it success setup or not.
+- Enter into container and run clickhouse client to execute queries
+
+```
+docker exec -it  clickhouse-server clickhouse-client
+```
 
 
 ## Setup Cluster
@@ -28,6 +32,9 @@ This part we will setup
 - 1 cluster, with 3 shards
 - Each shard has 2 replica server
 - Use ReplicatedMergeTree & Distributed table to setup our table.
+- 1 zookeeper server.
+
+**Please attention to the version of zookeeper. Zookeeper version equal or higher than 3.9.0 might not compatible with latest clickhouse version in docker-hub. From previous experiments, i got "Coordination::Exception: Unexpected handshake length received: 37 (Marshalling error): while receiving handshake from ZooKeeper. (KEEPER_EXCEPTION) (version 22.1.3.7 (official build)), 172.19.0.2:2181" error message while create ReplicatedMergeTree table, since it need connect to zookeeper server.**
 
 
 ### Cluster
@@ -39,7 +46,7 @@ version: '3'
 
 services:
     clickhouse-zookeeper:
-        image: zookeeper
+        image: zookeeper:3.8.2
         ports:
             - "2181:2181"
             - "2182:2182"
@@ -342,6 +349,8 @@ Please see config/users.xml
 docker run -it --rm --network="clickhouse-net" --link clickhouse-01:clickhouse-server yandex/clickhouse-client --host clickhouse-server -u user1 --password 123456
 ```
 
-## Source
+## Reference
 
 - https://clickhouse.yandex/docs/en/operations/table_engines/replication/#creating-replicated-tables
+- https://github.com/ClickHouse/ClickHouse/issues/53749
+- https://github.com/jneo8/clickhouse-setup/tree/master?tab=readme-ov-file
