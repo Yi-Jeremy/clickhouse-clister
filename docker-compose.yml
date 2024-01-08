@@ -142,6 +142,25 @@ services:
         depends_on:
             - "clickhouse-zookeeper"
         # command: ["/bin/bash", "-c", "apt-get update", "apt-get install -y openssh-server", "mkdir -p /var/run/sshd", "/usr/sbin/sshd -D &"]
+        
+    # with chproxy
+    clickhouse-proxy:
+        image: contentsquareplatform/chproxy:1.17.2
+        hostname: chproxy
+        container_name: chproxy
+        command: -config /opt/config.yml
+        ports:
+            - 9090:9090
+            - 20007:22
+        volumes:
+            - ./config/config.yml:/opt/config.yml
+        depends_on:
+            - "clickhouse-01"
+            - "clickhouse-02"
+            - "clickhouse-03"
+            - "clickhouse-04"
+            - "clickhouse-05"
+            - "clickhouse-06"
 networks:
     default:
         external:
